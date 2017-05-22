@@ -1,15 +1,10 @@
 package com.baidu.ueditor.upload;
 
 import com.baidu.ueditor.define.State;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 public class Uploader {
-
-	private static Logger logger = LoggerFactory.getLogger(Uploader.class);
 	private HttpServletRequest request = null;
 	private Map<String, Object> conf = null;
 
@@ -19,8 +14,6 @@ public class Uploader {
 	}
 
 	public final State doExec() {
-	    //todo:
-		logger.info("Uploader doExec");
 		String filedName = (String) this.conf.get("fieldName");
 		State state = null;
 

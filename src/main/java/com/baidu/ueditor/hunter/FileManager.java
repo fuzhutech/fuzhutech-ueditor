@@ -12,12 +12,8 @@ import com.baidu.ueditor.define.AppInfo;
 import com.baidu.ueditor.define.BaseState;
 import com.baidu.ueditor.define.MultiState;
 import com.baidu.ueditor.define.State;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class FileManager {
-
-	private static Logger logger = LoggerFactory.getLogger(FileManager.class);
 
 	private String dir = null;
 	private String rootPath = null;
@@ -34,10 +30,8 @@ public class FileManager {
 	}
 	
 	public State listFile ( int index ) {
-		logger.info("FileManager listFile");
 		
 		File dir = new File( this.dir );
-		logger.info("listFile dir:"+dir);
 		State state = null;
 
 		if ( !dir.exists() ) {
@@ -78,8 +72,6 @@ public class FileManager {
 			file = (File)obj;
 			fileState = new BaseState( true );
 			fileState.putInfo( "url", PathFormat.format( this.getPath( file ) ) );
-
-			logger.info("this.getPath:"+this.getPath(file));
 			state.addState( fileState );
 		}
 		
@@ -90,12 +82,8 @@ public class FileManager {
 	private String getPath ( File file ) {
 		
 		String path = file.getAbsolutePath();
-
-		path = path.replace('/','\\');
-		logger.info("file.getAbsolutePath:"+path);
-		logger.info("this.rootPath:"+this.rootPath);
 		
-		return path.replace( this.rootPath.replace('/','\\'), "/" );
+		return path.replace( this.rootPath, "/" );
 		
 	}
 	

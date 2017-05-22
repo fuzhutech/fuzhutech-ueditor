@@ -11,12 +11,8 @@ import com.baidu.ueditor.define.State;
 import com.baidu.ueditor.hunter.FileManager;
 import com.baidu.ueditor.hunter.ImageHunter;
 import com.baidu.ueditor.upload.Uploader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ActionEnter {
-
-	private static Logger logger = LoggerFactory.getLogger(ActionEnter.class);
 	
 	private HttpServletRequest request = null;
 	
@@ -25,7 +21,7 @@ public class ActionEnter {
 	
 	private String actionType = null;
 	
-	private ConfigManager configManager = null;
+	protected ConfigManager configManager = null;
 
 	public ActionEnter ( HttpServletRequest request, String rootPath ) {
 		
@@ -34,17 +30,8 @@ public class ActionEnter {
 		this.actionType = request.getParameter( "action" );
 		this.contextPath = request.getContextPath();
 		this.configManager = ConfigManager.getInstance( this.rootPath, this.contextPath, request.getRequestURI() );
+		
 	}
-
-	// todo:
-    public ActionEnter ( HttpServletRequest request, String rootPath,String configFilePath ) {
-
-        this.request = request;
-        this.rootPath = rootPath;
-        this.actionType = request.getParameter( "action" );
-        this.contextPath = request.getContextPath();
-        this.configManager = ConfigManager.getInstance( this.rootPath, this.contextPath, request.getRequestURI(),configFilePath);
-    }
 	
 	public String exec () {
 		

@@ -5,96 +5,94 @@ import com.baidu.ueditor.define.AppInfo;
 import com.baidu.ueditor.define.BaseState;
 import com.baidu.ueditor.define.FileType;
 import com.baidu.ueditor.define.State;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 public class BinaryUploader {
 
-    //private static Logger logger = LoggerFactory.getLogger(BinaryUploader.class);
-
-    public static State save(HttpServletRequest request,
+	public static State save(HttpServletRequest request,
                              Map<String, Object> conf) {
-        //FileItemStream fileStream = null;
-        MultipartFile multipartFile = null;
+		FileItemStream fileStream = null;
+		boolean isAjaxUpload = request.getHeader( "X_Requested_With" ) != null;
 
-        // 创建一个通用的多部分解析器
-        CommonsMultipartResolver multipartResolver =
-                new CommonsMultipartResolver(request.getSession().getServletContext());
+		if (!ServletFileUpload.isMultipartContent(request)) {
+			return new BaseState(false, AppInfo.NOT_MULTIPART_CONTENT);
+		}
 
-        // 判断 request 是否有文件上传,即多部分请求
-        if (!multipartResolver.isMultipart(request)) {
-            return new BaseState(false, AppInfo.NOT_MULTIPART_CONTENT);
+		ServletFileUpload upload = new ServletFileUpload(
+				new DiskFileItemFactory());
+
+        if ( isAjaxUpload ) {
+            upload.setHeaderEncoding( "UTF-8" );
         }
 
+		try {
+			FileItemIterator iterator = upload.getItemIterator(request);
 
-        try {
-            // 转换成多部分request
-            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+			while (iterator.hasNext()) {
+				fileStream = iterator.next();
 
-            Iterator<String> names = multiRequest.getFileNames();
+				if (!fileStream.isFormField())
+					break;
+				fileStream = null;
+			}
 
-            while (names.hasNext()) {
-                multipartFile = multiRequest.getFile(names.next());
+			if (fileStream == null) {
+				return new BaseState(false, AppInfo.NOTFOUND_UPLOAD_DATA);
+			}
 
-                if (multipartFile != null)
-                    break;
-            }
+			String savePath = (String) conf.get("savePath");
+			String originFileName = fileStream.getName();
+			String suffix = FileType.getSuffixByFilename(originFileName);
 
-            if (multipartFile == null) {
-                return new BaseState(false, AppInfo.NOTFOUND_UPLOAD_DATA);
-            }
+			originFileName = originFileName.substring(0,
+					originFileName.length() - suffix.length());
+			savePath = savePath + suffix;
 
-            String savePath = (String) conf.get("savePath");
-			//String originFileName = fileStream.getName();
-            String originFileName = multipartFile.getOriginalFilename();
-            String suffix = FileType.getSuffixByFilename(originFileName);
+			long maxSize = ((Long) conf.get("maxSize")).longValue();
 
-            originFileName = originFileName.substring(0,
-                    originFileName.length() - suffix.length());
-            savePath = savePath + suffix;
+			if (!validType(suffix, (String[]) conf.get("allowFiles"))) {
+				return new BaseState(false, AppInfo.NOT_ALLOW_FILE_TYPE);
+			}
 
-            long maxSize = (Long) conf.get("maxSize");
+			savePath = PathFormat.parse(savePath, originFileName);
 
-            if (!validType(suffix, (String[]) conf.get("allowFiles"))) {
-                return new BaseState(false, AppInfo.NOT_ALLOW_FILE_TYPE);
-            }
+			String physicalPath = (String) conf.get("rootPath") + savePath;
 
-            savePath = PathFormat.parse(savePath, originFileName);
+			InputStream is = fileStream.openStream();
+			State storageState = StorageManager.saveFileByInputStream(is,
+					physicalPath, maxSize);
+			is.close();
 
-            String physicalPath = conf.get("rootPath") + savePath;
+			if (storageState.isSuccess()) {
+				storageState.putInfo("url", PathFormat.format(savePath));
+				storageState.putInfo("type", suffix);
+				storageState.putInfo("original", originFileName + suffix);
+			}
 
-            //InputStream is = fileStream.openStream();
-            InputStream is = multipartFile.getInputStream();
-            State storageState = StorageManager.saveFileByInputStream(is,
-                    physicalPath, maxSize);
-            is.close();
+			return storageState;
+		} catch (FileUploadException e) {
+			return new BaseState(false, AppInfo.PARSE_REQUEST_ERROR);
+		} catch (IOException e) {
+		}
+		return new BaseState(false, AppInfo.IO_ERROR);
+	}
 
-            if (storageState.isSuccess()) {
-                storageState.putInfo("url", PathFormat.format(savePath));
-                storageState.putInfo("type", suffix);
-                storageState.putInfo("original", originFileName + suffix);
-            }
+	protected static boolean validType(String type, String[] allowTypes) {
+		List<String> list = Arrays.asList(allowTypes);
 
-            return storageState;
-        } /*catch (FileUploadException e) {
-            return new BaseState(false, AppInfo.PARSE_REQUEST_ERROR);
-        } */catch (IOException ignored) {
-        }
-        return new BaseState(false, AppInfo.IO_ERROR);
-    }
-
-    private static boolean validType(String type, String[] allowTypes) {
-        List<String> list = Arrays.asList(allowTypes);
-
-        return list.contains(type);
-    }
+		return list.contains(type);
+	}
 }
