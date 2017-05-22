@@ -1,4 +1,4 @@
-package com.fuzhutech;
+package com.fuzhutech.ueditor;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

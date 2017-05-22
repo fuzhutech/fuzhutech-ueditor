@@ -1,4 +1,4 @@
-package com.fuzhutech;
+package com.fuzhutech.ueditor;
 
 import javax.servlet.http.HttpServletRequest;
 
