@@ -8,7 +8,8 @@
     <packaging>jar</packaging>
 
     <name>fuzhutech-ueditor</name>
-    <url>http://maven.apache.org</url>
+    <description>根据百度富文本编辑器ueditor1_4_3_3所依赖的ueditor-1.1.2.jar源码修改，以支持在RESTful模式下支持前端Angular2程序的访问。</description>
+    <url>https://github.com/fuzhutech/fuzhutech-ueditor</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -67,6 +68,20 @@
         </dependency-->
 
     </dependencies>
+
+    <licenses>
+        <license>
+            <name>The MIT License</name>
+            <url>https://github.com/fuzhutech/fuzhutech-ueditor/blob/master/LICENSE</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>fuzhutech</name>
+            <email>fuzhutech@163.com</email>
+        </developer>
+    </developers>
 
     <build>
         <finalName>fuzhutech-ueditor</finalName>
