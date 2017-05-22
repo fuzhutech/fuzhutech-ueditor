@@ -13,9 +13,15 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- log4j日志文件管理包版本 -->
-        <slf4j.version>1.7.7</slf4j.version>
+
+        <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
+        <commons-fileupload.version>1.3.2</commons-fileupload.version>
+        <commons-codec.version>1.10</commons-codec.version>
+        <org.json.version>20160810</org.json.version>
+        <org.apache.maven.plugins-compiler.version>1.7.7</org.apache.maven.plugins-compiler.version>
+        <org.slf4j-log4j12.version>1.7.7</org.slf4j-log4j12.version>
     </properties>
+    <dependencyManagement></dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -25,23 +31,16 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- 日志文件管理包 slf4j -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
+            <version>${javax.servlet-api.version}</version>
         </dependency>
 
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
-            <version>1.3.1</version>
+            <version>${commons-fileupload.version}</version>
         </dependency>
         <!--dependency>
             <groupId>commons-io</groupId>
@@ -51,14 +50,21 @@
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.9</version>
+            <version>${commons-codec.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.json/json -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20160810</version>
+            <version>${org.json.version}</version>
+        </dependency>
+
+        <!-- 日志文件管理包 slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${org.slf4j-log4j12.version}</version>
         </dependency>
 
         <!--dependency>
@@ -90,7 +96,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.1</version>
+                    <version>${org.apache.maven.plugins-compiler.version}</version>
                     <configuration>
                         <source>1.8</source>
                         <target>1.8</target>
