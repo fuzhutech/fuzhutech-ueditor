@@ -13,6 +13,13 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
+/**
+ * @author     : fuzhu
+ * @group      : fuzhutech
+ * @Date       : 2017-05-24 21:14:49
+ * @Comments   : 扩展原有功能
+ * @Version    : 1.0.0
+ */
 public class ActionEnter extends com.baidu.ueditor.ActionEnter{
 
     public ActionEnter (HttpServletRequest request, String rootPath, String configFilePath ) {
