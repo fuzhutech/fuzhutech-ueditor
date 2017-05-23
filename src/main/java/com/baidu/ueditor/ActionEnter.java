@@ -1,9 +1,5 @@
 package com.baidu.ueditor;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import com.baidu.ueditor.define.ActionMap;
 import com.baidu.ueditor.define.AppInfo;
 import com.baidu.ueditor.define.BaseState;
@@ -12,14 +8,17 @@ import com.baidu.ueditor.hunter.FileManager;
 import com.baidu.ueditor.hunter.ImageHunter;
 import com.baidu.ueditor.upload.Uploader;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+
 public class ActionEnter {
 	
-	private HttpServletRequest request = null;
+	protected HttpServletRequest request = null;
 	
-	private String rootPath = null;
-	private String contextPath = null;
+	protected String rootPath = null;
+	protected String contextPath = null;
 	
-	private String actionType = null;
+	protected String actionType = null;
 	
 	protected ConfigManager configManager = null;
 
@@ -32,9 +31,12 @@ public class ActionEnter {
 		this.configManager = ConfigManager.getInstance( this.rootPath, this.contextPath, request.getRequestURI() );
 		
 	}
-	
-	public String exec () {
-		
+
+    public ActionEnter() {
+    }
+
+    public String exec () {
+
 		String callbackName = this.request.getParameter("callback");
 		
 		if ( callbackName != null ) {
@@ -60,7 +62,7 @@ public class ActionEnter {
 		if ( this.configManager == null || !this.configManager.valid() ) {
 			return new BaseState( false, AppInfo.CONFIG_ERROR ).toJSONString();
 		}
-		
+
 		State state = null;
 		
 		int actionCode = ActionMap.getType( this.actionType );

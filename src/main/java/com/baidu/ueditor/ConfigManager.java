@@ -22,12 +22,12 @@ import com.baidu.ueditor.define.ActionMap;
  */
 public class ConfigManager {
 
-	private final String rootPath;
-	private final String originalPath;
-	private final String contextPath;
+	protected /*final*/ String rootPath;
+	private /*final*/ String originalPath;
+	private /*final*/ String contextPath;
 	private static final String configFileName = "config.json";
 	private String parentPath = null;
-	private JSONObject jsonConfig = null;
+	protected JSONObject jsonConfig = null;
 	// 涂鸦上传filename定义
 	private final static String SCRAWL_FILE_NAME = "scrawl";
 	// 远程图片抓取filename定义
@@ -36,7 +36,7 @@ public class ConfigManager {
 	/*
 	 * 通过一个给定的路径构建一个配置管理器， 该管理器要求地址路径所在目录下必须存在config.properties文件
 	 */
-    protected ConfigManager(String rootPath, String contextPath, String uri) throws FileNotFoundException, IOException {
+    private ConfigManager(String rootPath, String contextPath, String uri) throws FileNotFoundException, IOException {
 		
 		rootPath = rootPath.replace( "\\", "/" );
 		
@@ -52,8 +52,11 @@ public class ConfigManager {
 		this.initEnv();
 		
 	}
-	
-	/**
+
+    public ConfigManager() {
+    }
+
+    /**
 	 * 配置管理器构造工厂
 	 * @param rootPath 服务器根路径
 	 * @param contextPath 服务器所在项目路径
@@ -187,7 +190,7 @@ public class ConfigManager {
 		
 	}
 	
-	private String readFile ( String path ) throws IOException {
+	protected String readFile(String path) throws IOException {
 		
 		StringBuilder builder = new StringBuilder();
 		

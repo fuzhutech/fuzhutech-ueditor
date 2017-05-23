@@ -79,7 +79,7 @@ public class FileManager {
 		
 	}
 	
-	private String getPath ( File file ) {
+	protected String getPath ( File file ) {
 		
 		String path = file.getAbsolutePath();
 		
