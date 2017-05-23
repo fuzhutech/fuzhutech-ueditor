@@ -17,11 +17,7 @@ public class FileType {
 		return FileType.types.get( key );
 	}
 	
-	/**
-	 * 根据给定的文件名,获取其后缀信息
-	 * @param filename
-	 * @return
-	 */
+	//根据给定的文件名,获取其后缀信息
 	public static String getSuffixByFilename ( String filename ) {
 		
 		return filename.substring( filename.lastIndexOf( "." ) ).toLowerCase();

@@ -4,8 +4,8 @@
 
     <groupId>com.fuzhutech</groupId>
     <artifactId>fuzhutech-ueditor</artifactId>
-    <!--version>1.0.0-SNAPSHOT</version-->
     <version>1.0.0</version>
+    <!--version>1.0.0-SNAPSHOT</version-->
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -127,6 +127,14 @@
                 <configuration>
                     <aggregate>true</aggregate>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -153,6 +161,14 @@
                         <configuration>
                             <aggregate>true</aggregate>
                         </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
 
                     <plugin>

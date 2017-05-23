@@ -113,9 +113,7 @@ public class ActionEnter {
 		
 	}
 	
-	/**
-	 * callback参数验证
-	 */
+	//callback参数验证
 	public boolean validCallbackName ( String name ) {
 		
 		if ( name.matches( "^[a-zA-Z_]+[\\w0-9_]*$" ) ) {
