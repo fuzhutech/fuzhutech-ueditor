@@ -8,8 +8,8 @@
 ## 主要修改点
 * 待续
 
-##安装
-###Maven
+## 安装
+### Maven项目
 在项目的pom.xml的dependencies中加入以下内容:
 ```xml
 <dependency>
